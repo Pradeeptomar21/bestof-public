@@ -1,0 +1,24 @@
+<form action="/admin/manage-business/edit/{{business_data.id}}" method="POST">
+   {% csrf_token %}
+                              <div class="form-group">
+                                 <label for="Bussiness Id">Bussiness Id</label>
+                                 <input type="text" class="form-control" name="Bussiness Id" readonly="" value="{{business_data.business_id}}" placeholder="Enter Business Id">
+                              </div>
+                              <div class="form-group">
+                                 <label for="Bussiness Name">Bussiness Name</label>
+                                 <input type="text" class="form-control" name="Bussiness Name" readonly="" value="{{business_data.name}}" placeholder="Enter Business Name">
+                              </div>
+                              <div class="form-group">
+                                 <label for="Delivery Partner">Delivery Partner</label>
+                                  {{delivery_partner_form.dilevery_partner}}
+<!--                                  <select class="form-control js-states" multiple="" id="multiple-checkboxes" name="Delivery Partner">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                 </select>
+ -->                              </div>
+                              <center><button type="btn" class="btn btn-dark">Submit</button></center>
+                           </form>
+

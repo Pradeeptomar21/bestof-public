@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+  <title>Bestof</title>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href='{% static "bestof-admin/images/favicon.png" %}' type="image/x-icon">
+   <!--  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href='{% static "bestof-admin/css/dataTables.bootstrap4.min.css" %}'>
+
+    <link rel="stylesheet" type="text/css" href='{% static "bestof-admin/css/admin.css" %}'>
+    <link rel="stylesheet" type="text/css" href='{% static "bestof-admin/css/font-awesome.min.css" %}'>
+     <link rel="stylesheet" href='{% static "bestof-admin/css/bootstrap-multiselect.css" %}'>
+     <link href='{% static "bestof-admin/css/select2.min.css" %}' rel="stylesheet" />
+     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+     <link href='{% static "bestof-admin/css/intlTelInput.css" %}' rel="stylesheet" media="screen">
+</head>
+<style>
+  #id_username {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+#id_password {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+</style>
+<body style="background-color: #fff;">
+
+
+
+<!-- Header Section-->
+<section>
+  <div class="container">
+    <div class="login-form-div">
+      <div class="col-md-5">
+       <form action="" method="post">
+        {% csrf_token %}
+        <h2>Login</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Email ID</label>
+                        {{form.username}}
+
+                        <!-- <input type="text" name="" class="form-control"> -->
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Password</label>
+                        {{form.password}}
+                        <!-- <input type="password" name="" class="form-control"> -->
+                    </div>
+                </div>
+               
+                
+                         </div>
+            
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-md-12 text-center">
+                  <button type="submit" class="View-btn btn-block">Login</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-------------------- Error message Modal--------------------->
+<div class="modal book-now-modal" id="dropdown-error-form">
+  <div class="modal-dialog">
+    <div class="modal-content show-popup">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Error Message</h4>
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <span id="error_message_for_search"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<!--------------------Modal Ends----------------->
+<!--------------------Success message Modal--------------------->
+<div class="modal book-now-modal" id="dropdown-info-form">
+  <div class="modal-dialog">
+    <div class="modal-content show-popup">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Success Message</h4>
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <span id="info_message_for_search"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<!--------------------Modal Ends----------------->
+</section>
+ <script src='{% static "bestof-admin/js/jquery.min.js" %}'></script>
+  <script src='{% static "bestof-admin/js/popper.min.js" %}'></script>
+  <script src='{% static "bestof-admin/js/bootstrap.min.js" %}'></script>
+
+</script>
+  <!-- message start -->
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+          <script>
+            $('#dropdown-info-form').modal('show');
+            $('#info_message_for_search').html('{{message}}');
+          </script>
+        {% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+          <script>
+            $('#dropdown-error-form').modal('show');
+            $('#error_message_for_search').html('{{message}}');
+          </script>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  <!-- message Stop -->
+<script>
+
+</body>
+</html>

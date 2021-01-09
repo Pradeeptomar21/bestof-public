@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+   <head>
+      <title>Bestof</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- <link rel="icon" href="images/favicon.png" type="image/x-icon"> -->
+      <!--  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+      <!-- ----------------------------- corper image ---------------------- -->
+      <link href='{% static "bestof-admin/js/crop_js/crop/croppie.css" %}' rel="stylesheet">
+      <!-- <script src='{% static "bestof-admin/js/crop_js/crop_image.js" %}'></script> -->
+      <!-- ----------------------------- corper image ---------------------- -->
+      <link rel="stylesheet" href='{% static "bestof-admin/css/bootstrap.min.css" %}'>
+      <link rel="stylesheet" type="text/css" href='{% static "bestof-admin/css/dataTables.bootstrap4.min.css" %}'>
+      <link rel="stylesheet" type="text/css" href='{% static "bestof-admin/css/admin.css" %}'>
+      <link rel="stylesheet" type="text/css" href='{% static "bestof-admin/css/font-awesome.min.css" %}'>
+      <link rel="stylesheet" href='{% static "bestof-admin/css/bootstrap-multiselect.css" %}'>
+      <link href='{% static "bestof-admin/css/select2.min.css" %}' rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+      <link href='{% static "bestof-admin/css/intlTelInput.css" %}' rel="stylesheet" media="screen">
+   </head>
+
+<form action="/compliance/edit-question-group/{{delivery_partner_data.id}}" enctype="multipart/form-data" method="POST">
+  {% csrf_token %}
+
+                  <div class="form-group">
+    <label for="exampleFormControlFile1">Logo</label>
+
+    <div class="col-md-4 col-xs-12 box-img-currentProf">
+                        <div class="icon-camera">
+                            <i class="mdi mdi-camera"></i>
+                        </div>
+                        <img src='{{delivery_partner_data.logo.url}}' onclick="profile_change();" class="user-image" style="border: 1px solid black; width: 155px;height: 91px;" alt="Logo">
+
+                        <input type="file" id="project_map_value" name="user_profile_photo" style="width: 100%; opacity: 0; position: absolute; top: 0px; overflow: hidden; height: 90px;" />                                   
+                    </div>
+
+  </div>
+              <div class="form-group" style="text-align:right; ">
+              <button type="Submit" class=" text-center btn btn-primary">Update</button>
+            </div>
+          </form>
+
+      <!-- body content stop -->
+ <script src='{% static "bestof-admin/js/jquery.min.js" %}'></script>
+  
+  <script src='{% static "bestof-admin/js/popper.min.js" %}'></script>
+  <script src='{% static "bestof-admin/js/bootstrap.min.js" %}'></script>
+    <script src='{% static "bestof-admin/js/bootstrap-multiselect.js" %}'></script>
+    <script src='{% static "bestof-admin/js/sweetalert.min.js" %}'></script>
+    <script src='{% static "bestof-admin/js/custom.js" %}'></script>
+    <!-- ----------------------- crop image js ------------------------------- -->
+    <script src='{% static "bestof-admin/js/crop_js/crop/croppie.js" %}'></script>
+
+    <script src='{% static "bestof-admin/js/crop_js/crop_image.js" %}'></script>
+    <!-- ----------------------- crop image js ------------------------------- -->
+    
+<!-- <script src="https://tynelz.com/assets/frontend/js/jquery.validate.min.js"></script> -->
+<!-- <script src="https://tynelz.com/assets/frontend/js/sweetalert/sweetalert.min.js"></script> -->
+   <!--  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script> -->
+    <script src='{% static "bestof-admin/js/jquery.dataTables.min.js" %}'></script>
+    <script src='{% static "bestof-admin/js/select2.min.js" %}'></script>

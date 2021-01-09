@@ -1,0 +1,16 @@
+
+
+
+
+
+
+            <form method="post" action="/admin/manage-food-category/edit/{{category_data.id}}">
+                               {% csrf_token %}
+                              <div class="form-group">
+                                 <label for="food category name">Name</label>
+                                  {{food_category_form.name}}
+<!--                                 <input type="text" class="form-control" name="Category Id" value="" placeholder="">-->
+                              </div>
+
+                              <center><button type="submit" class="btn btn-dark">Update</button></center>
+                           </form>

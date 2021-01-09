@@ -1,0 +1,97 @@
+{% extends "bestof-admin/base-template.html" %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <div class="add_category head-div mb-20">
+                     <h3 class="add_name">Post Creation</h3>
+                     <a href="add-operator.php" class="add-btn"><i class="fa fa-plus mr-5"></i>Add</a>
+                  </div>
+                  <div class="table-responsive">
+                     <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                           <tr>
+                              <th>S.No</th>
+                              <th>Time Stamp</th>
+                              <th>Restaurent</th>
+                              <th>Category</th>
+                              <th>location</th>
+                              <th>Status</th>
+                              <th>User</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>1.</td>
+                              <td>11:05 PM</td>
+                              <td>Khana</td>
+                              <td>Food</td>
+                              <td>Gwalior</td>
+                              <td><a href="" class="inactive-btn">Deactivate</a></td>
+                              <td>Harsh</td>
+                              <!-- <td >
+                                 <table class="act-button">
+                                  <tr>
+                                    <td ><a href="edit-operator.php" title="Edit" class="btn-edit "><span class="fa fa-pencil"></span></a></td>
+                                      <td><a href="#" class="btn-delete" title="Delete" data-toggle="modal" data-target="#modal-default2"><span class="fa fa-trash"></span></a></td>
+                                            <td ><a href="#" title="Set Homepage" class="btn-set "><span class="fa fa-home"></span></a></td>
+                                     </tr>
+                                 </table>
+                                    </td> -->
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!------------Delete messege Modal Popup Start------->
+   <div class="modal fade in sp-map" id="modal-default2">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Confirm</h4>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true" style="font-size: 32px;">×</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="paper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="container-fluid">
+                           <!--  <div class="login-form-content"> -->
+                           <form action="javascript:(0);">
+                              <div class="row">
+                                 <p>Are you sure you want to Delete?</p>
+                                 <div class="col-md-6">
+                                    <button type="submit" class="buttons-action btn-block" >Yes</button>
+                                 </div>
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                       <button type="submit" class="buttons-action btn-block" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                     <!-- </div> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!--------------------Delete Message Modal Ends---------------->
+</section>
+
+{% endblock %}
+{% block script %}
+{% endblock %}

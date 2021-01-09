@@ -1,0 +1,447 @@
+{% load admin_template_tags %}
+          <div class="table-responsive">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+              <thead>
+                {% if page_value == 'vote' %}
+                  <tr>
+                    <th>Business Id</th>
+                    <th>Restaurent Name</th>
+                    <th>Total Vote Up</th>
+                    <th>Total Vote Down</th>
+                    <th>Total Voted Categories</th>
+                  </tr>
+                {% endif %}
+                {% if page_value == 'like' %}
+                  <tr>
+                    <th>Business Id</th>
+                    <th>Restaurent Name</th>
+                    <th>Total Like</th>
+                    <!-- <th>Total Dislike</th> -->
+                  </tr>
+                {% endif %}
+                {% if page_value == 'post' %}
+                  <tr>
+                    <th>Business Id</th>
+                    <th>Restaurent Name</th>
+                    <th>Total Post</th>
+                  </tr>
+                {% endif %}                
+                {% if page_value == 'user' %}
+                  <tr>
+                    <th>Location</th>
+                    <th>Total User</th>
+                  </tr>
+                {% endif %}                
+                {% if page_value == 'search-keyword' %}
+                  <tr>
+                    <th>Keyword</th>
+                    <th>Total Search</th>
+                  </tr>
+                {% endif %}
+              </thead>
+              <tbody>
+                
+
+
+                {% if page_value == 'vote' %}
+                  {% for data in vote_data %}
+                  {% get_business_name data as business_name %}
+                  {% get_total_vote_data data start_date end_date as total_vote %}
+                  {% total_remove_vote data start_date end_date as total_remove %}
+
+
+
+                  {% total_category_by_business data as total_category %}
+                      {% if total_vote != 0 or total_remove != 0 %}
+                        <tr>
+                          <td>
+                            {{data}}
+                          </td>
+                          <td>
+                            {{business_name}}
+                          </td>
+                          <td>
+                            <button class="show_voting_details"  title="Show" data-toggle="modal" data-target="#show_voting_detail" data-business_id="{{data}}"><i class=""></i>{{total_vote}}</button>
+                          </td>                          
+                          <td>
+                            <button class="show_vote_down_details"  title="Show" data-toggle="modal" data-target="#show_voting_detail" data-business_id="{{data}}"><i class=""></i>
+                            {{total_remove}}</button>
+                          </td>
+                          <td>
+                            <button class="show_category_name_details"  title="Show" data-toggle="modal" data-target="#show_voting_detail" data-business_id="{{data}}"><i class=""></i>
+                            {{total_category}}</button>
+                          </td>
+                        </tr>
+                      {% endif %}
+                  {% endfor %}
+                {% endif %}                
+
+                {% if page_value == 'like' %}
+                  {% for data in vote_data %}
+                  
+                    {% get_total_like_data data start_date end_date as total_like %}
+                    {% get_business_name data as business_name %}
+                        <tr>
+                          <td>
+                            {{data}}
+                          </td>
+                          <td>
+                            {{business_name}}
+                          </td>
+                          <td>
+                            <button class="show_like_up_detail"  title="Show" data-toggle="modal" data-target="#show_voting_detail" data-business_id="{{data}}"><i class=""></i>{{total_like}}</button>
+                          </td>                          
+                          
+                        </tr>
+                  {% endfor %}
+                {% endif %}                
+
+                {% if page_value == 'post' %}
+                  {% for data in vote_data %}
+                    {% total_post_data data start_date end_date as total_post %}
+                    {% get_business_name data as business_name %}
+                        <tr>
+                          <td>
+                            {{data}}
+                          </td>
+                          <td>
+                            {{business_name}}
+                          </td>
+                          <td>
+                            <button class="show_post_detail"  title="Show" data-toggle="modal" data-target="#show_voting_detail" data-business_id="{{data}}"><i class=""></i>{{total_post}}</button>
+                          </td>                          
+                        </tr>
+                  {% endfor %}
+                {% endif %}
+
+                {% if page_value == 'user' %}
+                  {% for data in user_data %}
+                    {% if data != "" %}
+
+                    {% total_user_by_location data as total_user %}
+                      {% if total_post != 0 %}
+                        <tr>
+                          <td>
+                            {{data}}
+                          </td>
+                          <td>
+                            <button class="show_user_detail"  title="Show" data-toggle="modal" data-target="#show_voting_detail" data-location="{{data}}"><i class=""></i>{{total_user}}</button>
+                          </td>                          
+                        </tr>
+                      {% endif %}
+                    {% endif %}
+
+                  {% endfor %}
+                {% endif %}
+
+                {% if page_value == 'search-keyword' %}
+                  {% for data in search_keyword_data %}
+                    {% total_keyword_search data as total_search %}
+                        <tr>
+                          <td>
+                            {{data}}
+                          </td>
+                          <td>
+                            <button class="show_keyword_detail"  title="Show" data-toggle="modal" data-target="#show_voting_detail" data-keyword="{{data}}"><i class=""></i>{{total_search}}</button>
+                          </td>                          
+                        </tr>
+                  {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+
+
+   <div class="modal fade in sp-map" id="show_voting_detail">
+      <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Voting Details</h4>
+               <button type="button" class="close" id="voting_detail_modal" aria-label="Close">
+               <span aria-hidden="true" style="font-size: 32px;">×</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="paper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="container-fluid">
+
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+{% block script %}
+
+<script type="text/javascript">
+
+$(document).on("click",".show_voting_details",function(){
+  var id = $(this).data("business_id");
+  var start = $("#datepicker1").val();
+  var end = $("#datepicker").val();
+  var setfilterURL = "";
+   if(id)
+          {  
+              setfilterURL = setfilterURL+"&"+"business-id="+id; 
+          }   
+    if(start)
+          {  
+              setfilterURL = setfilterURL+"&"+"start-date="+start; 
+          }
+   if(end)
+      {  
+          setfilterURL = setfilterURL+"&"+"end-date="+end; 
+      }
+
+$.ajax({
+  method:"GET",
+  url :"/admin/vote-up?"+setfilterURL,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#show_voting_detail .modal-body").html(data);
+  }
+});
+});
+
+
+
+$(document).on("click",".show_vote_down_details",function(){
+var id = $(this).data("business_id");
+var start = $("#datepicker1").val();
+  var end = $("#datepicker").val();
+  var setfilterURL = "";
+   if(id)
+          {  
+              setfilterURL = setfilterURL+"&"+"business-id="+id; 
+          }   
+    if(start)
+          {  
+              setfilterURL = setfilterURL+"&"+"start-date="+start; 
+          }
+   if(end)
+      {  
+          setfilterURL = setfilterURL+"&"+"end-date="+end; 
+      }
+
+// document.write(id)
+$.ajax({
+  method:"GET",
+  url :"/admin/vote-down?"+setfilterURL,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#show_voting_detail .modal-body").html(data);
+  }
+});
+});
+
+
+
+$(document).on("click","#voting_detail_modal",function(){
+
+       // $("#show_voting_detail").modal('toggel');
+
+       $('#show_voting_detail').modal('hide');
+
+});
+
+
+  $(document).on("click",".show_category_name_details",function(){
+var id = $(this).data("business_id");
+var start = $("#datepicker1").val();
+  var end = $("#datepicker").val();
+  var setfilterURL = "";
+   if(id)
+          {  
+              setfilterURL = setfilterURL+"&"+"business-id="+id; 
+          }   
+    if(start)
+          {  
+              setfilterURL = setfilterURL+"&"+"start-date="+start; 
+          }
+   if(end)
+      {  
+          setfilterURL = setfilterURL+"&"+"end-date="+end; 
+      }
+
+// document.write(id)
+$.ajax({
+  method:"GET",
+  url :"/admin/category-detail?"+setfilterURL,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#show_voting_detail .modal-body").html(data);
+  }
+});
+});
+
+
+$(document).on("click",".show_like_up_detail",function(){
+var id = $(this).data("business_id");
+var start = $("#datepicker1").val();
+  var end = $("#datepicker").val();
+  var setfilterURL = "";
+   if(id)
+          {  
+              setfilterURL = setfilterURL+"&"+"business-id="+id; 
+          }   
+    if(start)
+          {  
+              setfilterURL = setfilterURL+"&"+"start-date="+start; 
+          }
+   if(end)
+      {  
+          setfilterURL = setfilterURL+"&"+"end-date="+end; 
+      }
+
+// document.write(id)
+$.ajax({
+  method:"GET",
+  url :"/admin/like-up?"+setfilterURL,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#show_voting_detail .modal-body").html(data);
+  }
+});
+});
+
+
+$(document).on("click",".show_like_down_detail",function(){
+var id = $(this).data("business_id");
+var start = $("#datepicker1").val();
+  var end = $("#datepicker").val();
+  var setfilterURL = "";
+   if(id)
+          {  
+              setfilterURL = setfilterURL+"&"+"business-id="+id; 
+          }   
+    if(start)
+          {  
+              setfilterURL = setfilterURL+"&"+"start-date="+start; 
+          }
+   if(end)
+      {  
+          setfilterURL = setfilterURL+"&"+"end-date="+end; 
+      }
+
+// document.write(id)
+$.ajax({
+  method:"GET",
+  url :"/admin/like-down?"+setfilterURL,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#show_voting_detail .modal-body").html(data);
+  }
+});
+});
+
+$(document).on("click",".show_post_detail",function(){
+var id = $(this).data("business_id");
+var start = $("#datepicker1").val();
+  var end = $("#datepicker").val();
+  var setfilterURL = "";
+   if(id)
+          {  
+              setfilterURL = setfilterURL+"&"+"business-id="+id; 
+          }   
+    if(start)
+          {  
+              setfilterURL = setfilterURL+"&"+"start-date="+start; 
+          }
+   if(end)
+      {  
+          setfilterURL = setfilterURL+"&"+"end-date="+end; 
+      }
+
+// document.write(id)
+$.ajax({
+  method:"GET",
+  url :"/admin/post-detail?"+setfilterURL,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#show_voting_detail .modal-body").html(data);
+  }
+});
+});
+$(document).on("click",".show_user_detail",function(){
+var id = $(this).data("location");
+var start = $("#datepicker1").val();
+  var end = $("#datepicker").val();
+  var setfilterURL = "";
+   if(id)
+          {  
+              setfilterURL = setfilterURL+"&"+"location="+id; 
+          }   
+    if(start)
+          {  
+              setfilterURL = setfilterURL+"&"+"start-date="+start; 
+          }
+   if(end)
+      {  
+          setfilterURL = setfilterURL+"&"+"end-date="+end; 
+      }
+
+// document.write(id)
+$.ajax({
+  method:"GET",
+  url :"/admin/user-detail?"+setfilterURL,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#show_voting_detail .modal-body").html(data);
+  }
+});
+});
+
+// -------------------------------
+$(document).on("click",".show_keyword_detail",function(){
+var id = $(this).data("keyword");
+var start = $("#datepicker1").val();
+  var end = $("#datepicker").val();
+  var setfilterURL = "";
+   if(id)
+          {  
+              setfilterURL = setfilterURL+"&"+"keyword="+id; 
+          }   
+    if(start)
+          {  
+              setfilterURL = setfilterURL+"&"+"start-date="+start; 
+          }
+   if(end)
+      {  
+          setfilterURL = setfilterURL+"&"+"end-date="+end; 
+      }
+
+// document.write(id)
+$.ajax({
+  method:"GET",
+  url :"/admin/keyword-detail?"+setfilterURL,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#show_voting_detail .modal-body").html(data);
+  }
+});
+});
+
+</script>
+{% endblock %}

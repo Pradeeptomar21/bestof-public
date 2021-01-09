@@ -1,0 +1,573 @@
+{% extends "bestof-admin/base-template.html" %}
+{% block content %}
+<style type="text/css">
+  .number-score {
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    background-color: mediumseagreen;
+}
+.number-score h1{
+  color: #fff;
+  font-weight: bold;
+}
+.number-score p {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+.calendar{
+  margin-bottom:200px;
+}
+/*.class-link{
+  color:#6cc417;
+  text-decoration:none;
+}
+
+.class-link:hover{
+ color:#ffbb00; 
+}*/
+
+/* From here you can start to copy */
+
+.calendar {
+  padding:8px;
+  background: #ffffff;
+  border-radius: 4px;
+  font-size:18px;
+  border: 1px solid #333333;
+}
+.ui-datepicker {
+  background: #ffffff;
+  border:1px solid #ddd;
+}
+.ui-datepicker-header {
+  height: 50px;
+  line-height: 50px;
+  color: #333;
+  background: #transparent;
+  margin-bottom: 10px;
+}
+.ui-datepicker-prev,
+.ui-datepicker-next {
+  width: 20px;
+  height: 20px;
+  text-indent: 9999px;
+  border-radius: 100%;
+  cursor: pointer;
+  overflow: hidden;
+  margin-top: 12px;
+}
+.ui-datepicker-prev {
+  float: left;
+  margin-left: 12px;
+}
+.ui-datepicker-prev:after {
+  transform: rotate(45deg);
+  margin: -43px 0px 0px 8px;
+}
+.ui-datepicker-next {
+  float: right;
+  margin-right: 12px;
+}
+.ui-datepicker-next:after {
+  transform: rotate(-135deg);
+  margin: -43px 0px 0px 6px;
+}
+.ui-datepicker-prev:after,
+.ui-datepicker-next:after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid #333;
+  border-bottom: 2px solid #333;
+}
+.ui-datepicker-prev:hover,
+.ui-datepicker-next:hover,
+.ui-datepicker-prev:hover:after,
+.ui-datepicker-next:hover:after {
+  border-color: #333333;
+}
+.ui-datepicker-title {
+  text-align: center;
+  font-size:25px;
+}
+.ui-datepicker-calendar {
+  width: 100%;
+  text-align: center;
+}
+.ui-datepicker-calendar thead tr th span {
+  display: block;
+  width: 40px;
+  color: #333;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+.ui-state-default {
+  display: block;
+  text-decoration: none;
+  color: #333333;
+  line-height: 40px;
+  font-size: 16px;
+}
+.ui-state-default:hover {
+  color: #333;
+  background:#4bd;
+  transition: all 0.25s cubic-bezier(0.7, -0.12, 0.2, 1.12);
+}
+.ui-state-highlight {
+  color: #333;
+  background-color:#4bd;
+}
+}
+.ui-state-active {
+  color: #ffffff;
+  background-color:#6cc417;
+  border-radius:50px;
+}
+.ui-datepicker-unselectable .ui-state-default {
+  color: #eee;
+  border: 2px solid transparent;
+}
+.ui-datepicker-calendar th{
+  font-weight: normal;
+}
+
+.ui-state-active {
+    color: #333;
+    background-color: #4bd;
+}
+.icon {
+    margin-left: -30px;
+    margin-top: -26px;
+    position: relative;
+    color: #6cc417;
+    font-size:20px;
+}
+</style>
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <div class="row">
+                  	<div class="col-md-2">
+                  		<div class="add_category head-div mb-20">
+                     		<h3 class="add_name">Audits</h3>
+                  		</div>
+                  		
+                  	</div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label>From Date<span class="text-danger">*</span></label>
+                           
+                           <input placeholder="Select your date" autocomplete="off" class="form-control" type="text" name="checkIn" id="datepicker1" value="{{start_date}}">
+                           
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label>To Date<span class="text-danger">*</span></label>
+                           <input placeholder="Select your date" autocomplete="off"  class="form-control" type="text" name="checkIn" id="datepicker"  value="{% if end_date %}{{end_date}}{% else %}{{from_date}}{% endif %}">
+                        </div>
+                     </div>
+                     <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <button class="btn btn-primary btn-block" id="search_data_by_date">Search</button>
+                     </div>
+                  </div>
+
+                  <div class="row" style="padding: 0 10px;">
+                    <div class="col-md-3">
+                     <div class="speed-number-card">
+                        <div class="card bg-primary text-white mb-4">
+                           <div class="card-body">Total Vote</div>
+                           <div class="cricle-box">{{vote_data|length}}</div>
+                           <div class="card-footer d-flex align-items-center justify-content-between">
+                              <button class="small text-white stretched-link edit_question_group"  title="Edit" data-toggle="modal" data-target="#exampleModal" data-detail_page="vote">More Info</button>
+                              <!-- <a class="small text-white stretched-link"data-toggle="modal" data-target="#exampleModal" href="#">More Info</a> -->
+                              <div class="small text-white">
+                                 <i class="fa fa-angle-right"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                   </div>
+                   <div class="col-md-3">
+                     <div class="speed-number-card">
+                        <div class="card bg-danger text-white mb-4">
+                           <div class="card-body">Total Like</div>
+                           <div class="cricle-box">{{like_data|length}}</div>
+                           <div class="card-footer d-flex align-items-center justify-content-between">
+                              <button class="small text-white stretched-link edit_question_group"  title="Edit" data-toggle="modal" data-target="#exampleModal" data-group_id="{{data.id}}"  data-detail_page="like">More Info</button>
+                              <div class="small text-white">
+                                 <i class="fa fa-angle-right"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                   </div>
+                   <div class="col-md-3">
+                     <div class="speed-number-card">
+                        <div class="card bg-warning text-white mb-4">
+                           <div class="card-body">Total Post</div>
+                           <div class="cricle-box">{{Business_Posts_data|length}}</div>
+                           <div class="card-footer d-flex align-items-center justify-content-between">
+                              <button class="small text-white stretched-link edit_question_group"  title="Edit" data-toggle="modal" data-target="#exampleModal" data-group_id="{{data.id}}" data-detail_page="post">More Info</button>
+                              <div class="small text-white">
+                                 <i class="fa fa-angle-right"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                   </div>
+                   <div class="col-md-3">
+                     <div class="speed-number-card">
+                        <div class="card bg-success text-white mb-4">
+                           <div class="card-body">Total User</div>
+                           <div class="cricle-box">{{user_data|length}}</div>
+                           <div class="card-footer d-flex align-items-center justify-content-between">
+                              <button class="small text-white stretched-link edit_question_group"  title="Edit" data-toggle="modal" data-target="#exampleModal" data-group_id="{{data.id}}" data-detail_page="user">More Info</button>
+                              <div class="small text-white">
+                                 <i class="fa fa-angle-right"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                   </div>
+                   <div class="col-md-3">
+                     <div class="speed-number-card">
+                        <div class="card bg-success text-white mb-4">
+                           <div class="card-body">Total Search Keyword</div>
+                           <div class="cricle-box">{{search_keyword_data|length}}</div>
+                           <div class="card-footer d-flex align-items-center justify-content-between">
+                              <button class="small text-white stretched-link edit_question_group"  title="Edit" data-toggle="modal" data-target="#exampleModal" data-group_id="{{data.id}}" data-detail_page="search-keyword">More Info</button>
+                              <div class="small text-white">
+                                 <i class="fa fa-angle-right"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!--           <div class="speed-number-card">
+                        <div class="card bg-info text-white mb-4">
+                          <div class="card-body">Total TourOperator</div>
+                          <div class="cricle-box">50</div>
+                          <div class="card-footer d-flex align-items-center justify-content-between"> <a class="small text-white stretched-link" href="#">More Info</a>
+                            <div class="small text-white">
+                              <i class="fa fa-angle-right"></i>
+                            </div>
+                          </div>
+                        </div>
+                        </div> -->
+                  </div>
+                  <!--             <div class="row" style="padding: 6px;">
+                     <div class="col-md-3">
+                        <div class="form-group" style="margin-bottom: 0;">
+                         <select class="form-control">
+                           <option>Current Location</option>
+                           <option>Gwalior</option>
+                           <option>Dehli</option>                    
+                         </select>
+                       
+                       </div>
+                     </div>
+                     -->
+                  <!--                    <div class="col-md-3">
+                     <div class="form-group" style="margin-bottom: 0;">
+                      <select class="form-control">
+                        <option>Major City</option>
+                        <option>Gwalior</option>
+                        <option>Dehli</option>                    
+                      </select>
+                     
+                     </div>
+                     </div> -->
+                  <!--                   <div class="col-md-3">
+                     <div class="form-group" style="margin-bottom: 0;">
+                      <select class="form-control" >
+                        <option>Post</option>
+                        <option>1</option>
+                        <option>2</option>                    
+                      </select>
+                     
+                     </div>
+                     </div> -->
+                  <!--   <div class="col-md-3">
+                     <div class="form-group" style="margin-bottom: 0;">
+                      <select class="form-control">
+                        <option>Time Stamp</option>
+                        <option>Date</option>
+                        <option>Time</option>                    
+                      </select>
+                     
+                     </div>
+                     </div> -->
+               </div>
+               <!--   <div class="table-responsive">
+                  <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                      <tr>
+                        
+                         <th>S.No.</th>
+                        <th>Descripton</th>
+                        <th>Action</th>
+                        <th>Time Stamp</th>
+                        <th>Current Location </th>
+                        <th>Major City</th>
+                        <th>Post</th>
+                        <th>Status</th>
+                         <th>User Name</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                  
+                      <tr>
+                        <td>1</td>
+                        <td>Rahhhsh</td>
+                        <td>Vote</td>
+                        <td>1:25 PM</td>
+                        <td>not</td>
+                        <td>Gwalior</td>
+                        <td>gwalior</td>
+                        <td><a href="" class="inactive-btn">Deactivate</a></td>
+                        <td>harsh</td>
+                       </tr>
+                        <tr>
+                        <td>2</td>
+                        
+                        <td>Raja Pancham Singh Marg</td>
+                        <td>vote</td>
+                        <td >1:19 PM</td>
+                        <td>Gwalior</td>
+                        <td>Gwalior</td>
+                        <td>likdkk</td>
+                        <td><a href="" class="active-btn">Activate</a></td>
+                        <td>Harsh</td>
+                       </tr>
+                    </tbody>
+                  </table>
+                  </div> -->
+            </div>
+         </div>
+      </div>
+   </div>
+   </div>
+   <!------------Delete messege Modal Popup Start------->
+   <div class="modal fade in sp-map" id="modal-default2">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Confirm</h4>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true" style="font-size: 32px;">×</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="paper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="container-fluid">
+                           <!--  <div class="login-form-content"> -->
+                           <form action="javascript:(0);">
+                              <div class="row">
+                                 <p>Are you sure you want to Delete?</p>
+                                 <div class="col-md-6">
+                                    <button type="submit" class="buttons-action btn-block" >Yes</button>
+                                 </div>
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                       <button type="submit" class="buttons-action btn-block" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                     <!-- </div> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Audit Detail</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+         </div>
+      </div>
+   </div>
+   <!--------------------Delete Message Modal Ends---------------->
+</section>
+{% endblock %}
+{% block script %}
+<!-- ---------------------------- -->
+<script type="text/javascript">
+//---------------------------------------- filter start --------------------------------- 
+   function set_short_filter(set_filter="")
+     {
+       var setfilterURL = "";
+// -------------------------------------- filter for price start -----------------
+   var start = $("#datepicker1").val();
+   var end = $("#datepicker").val();
+// -------------------------------------- filter for price end -----------------
+   // alert(end);
+// -------------------------------------- set url for filter start -----------------
+       //   if(pric){ setfilterURL = setfilterURL+pric; }
+        if(start)
+        	{  
+           		setfilterURL = setfilterURL+"&"+"start-date="+start; 
+         	}
+
+       if(end)
+         	{  
+           		setfilterURL = setfilterURL+"&"+"end-date="+end; 
+         	}
+       // if(rating)
+       //   {  
+       //     setfilterURL = setfilterURL+"&"+rating; 
+       //   }
+// -------------------------------------- set url for filter end -----------------
+// -------------------------------------- window reload function start -----------------   
+         window.location.href = "?"+setfilterURL;
+     }
+// -------------------------------------- window reload function end -----------------
+// ------------------------------------------ filter function start ------------------
+   $(document).on("click","#search_data_by_date",function(){
+
+   	// alert("ljoj");
+   set_short_filter();
+   });
+//---------------------------------------- filter end --------------------------------- 
+</script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js" integrity="sha256-H9jAz//QLkDOy/nzE9G4aYijQtkLt9FvGmdUTwBk6gs=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js" integrity="sha256-5YmaxAwMjIpMrVlK84Y/+NjCpKnFYa8bWWBbUHSBGfU=" crossorigin="anonymous"></script> -->
+<!-- <script>
+ jQuery(document).ready(function () {
+
+  var todaysDate = new Date()
+  date = new Date().setDate(todaysDate.getDate() - 30) ;
+$("#datepicker1").val($.datepicker.formatDate('yy-mm-dd', new Date(date)));
+
+
+        jQuery('#datepicker1').datepicker({
+            dateFormat: "yy-mm-dd",
+             maxDate: 0,
+             todayHighlight: true,
+      highlightWeek: true,
+             defaultDate: new Date(date),
+        });
+    });
+</script>
+ <script>
+jQuery(document).ready(function () {
+  var todaysDate = new Date()
+  date = new Date().setDate(todaysDate.getDate()) ;
+        jQuery('#datepicker').datepicker({
+              dateFormat: "yy-mm-dd",
+       startDate: '0d',
+      maxDate: 0,
+      todayHighlight: true,
+      highlightWeek: true,
+             defaultDate: new Date(date),
+        });
+    });
+
+jQuery(document).ready(function () {
+  var todaysDate = new Date()
+  date = new Date().setDate(todaysDate.getDate()) ;
+        jQuery('#datepicker2').datepicker({
+              dateFormat: "yy-mm-dd",
+       startDate: '0d',
+      maxDate: 0,
+      todayHighlight: true,
+      highlightWeek: true,
+             defaultDate: new Date(date),
+        });
+    });
+
+ </script> -->
+<script type="text/javascript">
+   $(document).on("click",".edit_question_group",function(){
+   // var id = $(this).data("group_id");
+   var detail_page = $(this).data("detail_page");
+   var start = $("#datepicker1").val();
+   var end = $("#datepicker").val();
+   
+   var setfilterURL = "";
+
+   if(detail_page)
+        	{  
+           		setfilterURL = setfilterURL+"&"+"detail-page="+detail_page; 
+         	}   
+    if(start)
+        	{  
+           		setfilterURL = setfilterURL+"&"+"start-date="+start; 
+         	}
+
+   if(end)
+     	{  
+       		setfilterURL = setfilterURL+"&"+"end-date="+end; 
+     	}
+
+   // alert(end);
+
+   $.ajax({
+     method:"GET",
+     url :"/admin/audit-detail?"+setfilterURL,
+     dataType:"html",
+   
+     success:function(data)
+     {
+        $("#exampleModal .modal-body").html(data);
+     }
+   });
+   });
+</script>
+<script>
+   $(document).ready(function() {
+     $(".set > a").on("click", function() {
+       if ($(this).hasClass("active")) {
+         $(this).removeClass("active");
+         $(this)
+           .siblings(".content")
+           .slideUp(200);
+         $(".set > a i")
+           .removeClass("fa-angle-up")
+           .addClass("fa-angle-down");
+       } else {
+         $(".set > a i")
+           .removeClass("fa-angle-up")
+           .addClass("fa-angle-down");
+         $(this)
+           .find("i")
+           .removeClass("fa-angle-down")
+           .addClass("fa-angle-up");
+         $(".set > a").removeClass("active");
+         $(this).addClass("active");
+         $(".content").slideUp(200);
+         $(this)
+           .siblings(".content")
+           .slideDown(200);
+       }
+     });
+   });
+</script>
+ 
+{% endblock %}  

@@ -1,0 +1,103 @@
+{% load static %}
+{% load admin_template_tags %}
+
+
+{% static "images/NoImage.jpg" as photo %}
+<style type="">
+	.Restaurant{
+		/*background-color: white;*/
+		font-weight: bold;
+	}
+
+  .hero {
+  background-color: #000000;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url({% if post_instance.image %}{{post_instance.image.url}}{% else %}{{photo}}{% endif %});
+  background-position: center;
+  background-size: cover;
+  color: #ffffff;
+  padding: 1em;
+  /*text-align: center;*/
+}
+	.post-det{
+		    padding: 15px 2px 15px 2px;
+		    position: relative;
+    bottom: 16px;
+	}
+
+</style>
+
+
+
+
+
+
+
+
+
+<div class="row post-det hero" >
+  <div class="col-md-3">
+    <label class="Restaurant">Restaurant Name:</label>
+  </div>
+  <div class="col-md-9">
+    <label class="Restaurant">{{post_instance.Business_id.name}}</label>
+  </div>
+  <div class="col-md-3">
+    <label class="Restaurant">Category Name:</label>
+  </div>
+  <div class="col-md-9">
+    <label class="Restaurant">{{post_instance.Category_id.name}}</label>
+  </div>  
+  <div class="col-md-3">
+    <label class="Restaurant">Owner:</label>
+  </div>
+  <div class="col-md-9">
+    <label class="Restaurant">{% post_owner_name post_instance.owner_id as owner %}{{owner.full_name}}</label>
+  </div>  
+  <div class="col-md-3">
+    <label class="Restaurant">Date & Time:</label>
+  </div>
+  <div class="col-md-9">
+    <label class="Restaurant">{{post_instance.created_dt}}</label>
+  </div>
+  
+</div>
+
+<!--  <div class="table-responsive">
+     <table id="example" class="table table-striped table-bordered" style="width:100%">
+
+         <tr><th>Business Id</th><th>Restaurant Name</th></tr>
+         <tr><td>{{business_instance.business_id}}</td><td>{{business_instance.name}}</td></tr>
+
+    </table>
+ </div> -->
+ <div class="table-responsive">
+     <center><h3><b>Vote Details</b></h3></center>
+                     <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                           <tr>
+                              <th>S.No.</th>
+                              <th>Image</th>
+                              <th>Voted by</th>
+                               <th>Date & Time</th>
+                           </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for data in post_data %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td><img src="{% if data.User_id.user_image %}{{data.User_id.user_image.url}}{% endif %}" class="table-img" alt="{{data.User_id.full_name}}" title="{{data.User_id.full_name}}"></td>
+                                
+                                <td>{{data.User_id}} ({{data.User_id.full_name}})</td>
+                                <td>{{data.created_dt}}</td>
+                            </tr>
+                         {% endfor %}
+                        </tbody>
+
+                     </table>
+ </div>
+
+
+{% block script %}
+
+{% endblock %}

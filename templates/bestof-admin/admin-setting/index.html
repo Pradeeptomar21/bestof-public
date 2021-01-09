@@ -1,0 +1,163 @@
+{% extends "bestof-admin/base-template.html" %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div class="row">
+   <div class="col-lg-12">
+      <div class="row bg-title">
+         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Admin</h4>
+         </div>
+      </div>
+      <div id="page-wrapper">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-2">
+               </div>
+               <div class="col-md-8">
+                  <form id="change_password_form" method="post" action="">
+
+                     <div class="form-group">
+                        <form method="post" autocomplete="off">
+                          {% csrf_token %}
+                        <div class="form-group">
+                              <label for="profile.currentPassword">
+
+                                  *
+                                  {{form.old_password.label_tag}}
+                              </label>
+                              <input type="password" name="old_password" autofocus="" placeholder="Old Password" required="" id="id_old_password" class="form-control">
+                                <!-- {{form.old_password}} -->
+                                <span style="color:red;">{{form.old_password.errors}}</span>
+                          </div>
+                        <div class="form-group">
+
+                        <label for="profile-newPassword">
+
+                            *
+                            {{form.new_password1.label_tag}}
+                        </label>
+                        <input type="password" name="new_password1" required="" placeholder="New Password" class="form-control" id="id_new_password1">
+                          <span style="color:red;">
+                          {{form.new_password1.errors}}
+                        </span>
+
+                  </div>
+                    <div class="password-info-rules form-group">
+                           {% if form.new_password1.help_text %}
+                            <div class="help">{{form.new_password1.help_text|safe}}</div>
+                          {% endif %}
+                    </div>
+
+
+                           <div class="form-group">
+                           <label for="profile.checkNewPassword">
+
+                               *
+                               {{form.new_password2.label_tag}}<span class="skip"></span>
+                           </label>
+                         <input type="password" name="new_password2" placeholder="Confirmation Password" required="" class="form-control" id="id_new_password2">
+                            <span style="color:red;">
+                             {{form.new_password2.errors}}
+                           </span>
+                       </div>
+                       <div class="password-info-rules form-group">
+                              {% if form.new_password2.help_text %}
+                               <div class="help">{{form.new_password2.help_text|safe}}</div>
+                             {% endif %}
+                             </div>
+                           <div class="form-group">
+                           <a href=""><button type="button" class="btn btn-primary space-right" >Cancel</button></a>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                     </div>
+                  </form>
+
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+</section>
+
+{% endblock %}
+{% block script %}
+{% endblock %}
+<!-- <script>
+   var imgUpload = document.getElementById('upload_imgs')
+   , imgPreview = document.getElementById('img_preview')
+   , imgUploadForm = document.getElementById('img-upload-form')
+   , totalFiles
+   , previewTitle
+   , previewTitleText
+   , img;
+   
+   imgUpload.addEventListener('change', previewImgs, false);
+   imgUploadForm.addEventListener('submit', function (e) {
+   e.preventDefault();
+   alert('Images Uploaded! (not really, but it would if this was on your website)');
+   }, false);
+   
+   function previewImgs(event) {
+   totalFiles = imgUpload.files.length;
+   
+   if(!!totalFiles) {
+     imgPreview.classList.remove('quote-imgs-thumbs--hidden');
+     previewTitle = document.createElement('p');
+     previewTitle.style.fontWeight = 'bold';
+     previewTitleText = document.createTextNode(totalFiles + ' Total Images Selected');
+     previewTitle.appendChild(previewTitleText);
+     imgPreview.appendChild(previewTitle);
+   }
+   
+   for(var i = 0; i < totalFiles; i++) {
+     img = document.createElement('img');
+     img.src = URL.createObjectURL(event.target.files[i]);
+     img.classList.add('img-preview-thumb');
+     imgPreview.appendChild(img);
+   }
+   }
+   </script>
+   <script>
+   function handleFileSelect(evt) {
+     var files = evt.target.files;
+   
+     // Loop through the FileList and render image files as thumbnails.
+     for (var i = 0, f; f = files[i]; i++) {
+   
+       console.log(f);
+       
+       // Only process image files.
+       if (!f.type.match('video.*')) {
+         continue;
+       }
+       
+   
+       var reader = new FileReader();
+   
+       // Closure to capture the file information.
+       reader.onload = (function(theFile) {
+         return function(e) {
+           // Render thumbnail.
+           var span = document.createElement('span');
+           span.innerHTML = 
+           [
+             '<video src="', 
+             e.target.result,
+             '" title="', escape(theFile.name), 
+             'style="max-width:100px"',
+             '">',
+             '</video>'
+           ].join('');
+           
+           document.getElementById('list').insertBefore(span, null);
+         };
+       })(f);
+   
+       // Read in the image file as a data URL.
+       reader.readAsDataURL(f);
+     }
+   }
+   
+   document.getElementById('video').addEventListener('change', handleFileSelect, false);
+   </script> -->

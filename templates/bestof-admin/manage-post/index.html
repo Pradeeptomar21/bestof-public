@@ -1,0 +1,284 @@
+{% extends "bestof-admin/base-template.html" %}
+{% block content %}
+{% load admin_template_tags %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <div class="add_category head-div mb-20">
+                     <h3 class="add_name">Manage post</h3>
+<!--                     <a href="add-event.php" class="add-btn"><i class="fa fa-plus mr-5"></i>Add</a>-->
+                  </div>
+                  <div class="table-responsive">
+                     <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                           <tr>
+                              <th>S.No</th>
+                              <th>Restaurant Name</th>
+                              <th>Category Name</th>
+                              <th>Image</th>
+                              <th>Owner</th>
+                              <th>Vote Detail</th>
+                              <th>Date & Time</th>
+                              <th>Status</th>
+<!--                              <th>Action</th>-->
+                           </tr>
+                        </thead>
+                        
+                        <tbody>
+                          {% for data in get_manage_post %}
+                           <tr>
+                              <td>{{forloop.counter}}</td>
+                              <td><a href="#">{{data.Business_id.name}}</a></td>
+                              <td>{{data.Category_id.name}}</td>
+                              <td><img src="{% if data.image %}{{data.image.url}}{% endif %}" alt="{{data.Category_id.name}}" title="{{data.Category_id.name}}" style="width:80px; height:50px; " ></td>
+                              <td>{% post_owner_name data.owner_id as owner %}{{owner.full_name}}</td>
+                              <td>
+
+                              
+                              <table class="act-button">
+                                    <tbody><tr>
+                                      <td>
+                                         {% post_voted_by data.id as user %}{{user}}
+                                      </td>
+                                       <td><button class="btn-edit edit_food_category" title="View" data-toggle="modal" data-target="#view_post_detail" data-post_id="{{data.id}}" style="    padding: 1px 8px 1px 8px!important;"><i class="fa fa-eye"></i></button></td>
+                                      
+                                    </tr>
+                                 </tbody></table>
+
+                            </td>
+                              <td>{{data.created_dt}}</td>
+
+                               <td>
+                                  {% if data.publish_status == True %}
+                              <button poststatus-id="{{data.id}}" poststatus="{{data.publish_status}}" class=" active-btn  approve">
+                              Active</button>
+                              {% else %}
+                              <button poststatus-id="{{data.id}}" poststatus="{{data.publish_status}}" class=" inactive-btn  approve">
+                              Deactive</button>
+                              {% endif %}
+
+                                 <!-- <a href="" class="active-btn">{{data.publish_status}}</a> -->
+                              </td>
+
+
+                           </tr>
+                                                   {% endfor %}
+                        </tbody>
+
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+      <!-- edit modal----->
+   <div class="modal fade in sp-map" id="view_post_detail">
+      <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Post Detail</h4>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true" style="font-size: 32px;">×</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="paper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="container-fluid">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!------------Delete messege Modal Popup Start------->
+   <div class="modal fade in sp-map" id="modal-default2">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Confirm</h4>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true" style="font-size: 32px;">×</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="paper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="container-fluid">
+                           <!--  <div class="login-form-content"> -->
+                           <form action="javascript:(0);">
+                              <div class="row">
+                                 <p>Are you sure you want to Delete?</p>
+                                 <div class="col-md-6">
+                                    <button type="submit" class="buttons-action btn-block" >Yes</button>
+                                 </div>
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                       <button type="submit" class="buttons-action btn-block" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                     <!-- </div> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!--------------------Delete Message Modal Ends---------------->
+</section>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).on("click",".edit_food_category",function(){
+   var id = $(this).data("post_id");
+   // alert(id);
+   $.ajax({
+     method:"GET",
+     url :"/admin/manage-posts/view-post-detail?post-id="+id,
+     dataType:"html",
+   
+     success:function(data)
+     {
+        $("#view_post_detail .modal-body").html(data);
+     }
+   });
+   });
+
+ //---------Block and Unblock User Start----------------
+         $(document).on('click', ".approve", function (e) {
+         var poststatusid = $(e.currentTarget).attr("poststatus-id");
+         var poststatus = $(e.currentTarget).attr('poststatus');
+
+         if(poststatus == 'True'){
+         varstatus = 'Deactive';
+         }
+         else{
+         varstatus = 'Active';
+         }
+         swal({
+          title: 'Are you sure?',
+          text: varstatus+' this',
+          icon: 'warning',
+          buttons: {
+            cancel: {
+              text: "Cancel",
+              value: null,
+              visible: true,
+              closeModal: true,
+            },
+            confirm: {
+              text: "OK",
+              value: true,
+              visible: true,
+              closeModal: true
+            },
+          }
+         }).then(function (willBlock){
+         if (willBlock) {
+          var dataString = 'poststatusid='+poststatusid+'&poststatus='+poststatus;
+                   var token = '{{csrf_token}}';
+                   var geturl = window.location.href;
+                   var url_in_array = geturl.split("/");
+                   var set_url = url_in_array[2];
+
+                   $.ajax({
+                           method:"POST",
+                           headers: { "X-CSRFToken": token },
+                           url: "http://"+set_url+"/admin/manage-posts/post-status",
+
+              data: dataString,
+              dataType:"json",
+              cache: false,
+              success: function(userresponse)
+              {
+                if (userresponse) {
+                    swal({
+                          title: 'successfully!',
+                          text: 'Update',
+                          icon: 'success',
+                           button: "Ok"
+                        }).then(function() {
+                          location.reload();
+                       });
+                }else{
+                  swal({
+                            text: 'Update failed',
+                             icon:'error',
+                            button: {
+                              text: "OK",
+                              value: true,
+                              visible: true,
+                              className: "btn btn-primary"
+                            }
+                          });
+                }
+
+              },
+                error: function (jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    swal({
+                      text: msg,
+                      icon:'error',
+                      button: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-primary"
+                      }
+                    });
+                },
+            });
+         }
+         });
+         });
+         //---------Block and Unblock User End----------------
+             function remove_product(urls,message,done,fail)
+         {
+         swal({
+            title: message,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+             window.location.href = urls;
+            } else {
+              // swal(fail);
+            }
+          });
+         }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,289 @@
+{% extends "bestof-admin/base-template.html" %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <h3 class="add_name">Food Details</h3>
+                  <!---------------------------------->
+                  <div  class="col-md-10">
+                     <form class="form-inline" action="{% url 'manage_food_category_link:ManageFoodCategoryView' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group has-feedback">
+                           <div class="input-group">
+                              <input type="text" name="Category_name" class="form-control" required>
+                              <span class="input-group-addon" style="padding: 0 5px 0 5px; line-height: normal;">                                             
+                              <button type="submit" name="submit" value="ok"  style="display: block;" class="add-btn">Add Category</button>
+                              </span>   
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+                  <!---------------------------------->
+                  <!-- <div class="add_category head-div mb-20">
+                     <a href="#" class="add-btn"><i class="fa fa-plus mr-5"></i>Add Category</a>
+                     </div> -->
+                  <div class="table-responsive">
+                     <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                           <tr>
+                              <th>S.No.</th>
+                              <th>Name</th>
+                              <th>Created Date</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for data in category_data %}
+                           <tr>
+                              <td>{{forloop.counter}}</td>
+                              <td>{{data.name}}</td>
+                              <td>{{data.created_dt}}</td>
+                              <td>
+                                 {% if data.publish_status == True %}
+                                 <button categorystatus-id="{{data.id}}" categorystatus="{{data.publish_status}}" class=" active-btn  approve">
+                                 Active</button>
+                                 {% else %}
+                                 <button categorystatus-id="{{data.id}}" categorystatus="{{data.publish_status}}" class=" inactive-btn  approve">
+                                 Deactive</button>
+                                 {% endif %}
+                                 <!-- <a href="" class="active-btn">{{data.publish_status}}</a> -->
+                              </td>
+                              <td >
+                                 <table class="act-button">
+                                    <tr>
+                                       <td><button class="btn-edit edit_food_category"  title="Edit" data-toggle="modal" data-target="#edit-food_category" data-food_category_id="{{data.id}}"><i class="fa fa-pencil"></i></button></td>
+                                       {%comment%}  
+                                       <td ><a href="#" title="Edit" class="btn-edit "><span class="fa fa-pencil"></span></a></td>
+                                       {%endcomment%}
+                                       <td><a href="#" class="btn-delete" title="Delete" data-toggle="modal" data-target="#modal-default2" id="data-food_category" data-food_category_id="{{data.id}}"><span class="fa fa-trash"></span></a></td>
+                                    </tr>
+                                 </table>
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- edit modal----->
+   <div class="modal fade in sp-map" id="edit-food_category">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Edit Food Category</h4>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true" style="font-size: 32px;">×</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="paper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="container-fluid">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!------------Delete messege Modal Popup Start------->
+   <div class="modal fade in sp-map" id="modal-default2">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Confirm</h4>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true" style="font-size: 32px;">×</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="paper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="container-fluid">
+                           <!--  <div class="login-form-content"> -->
+                           <form action="{% url 'manage_food_category_link:FoodCategoryDeleteView' %}" method="POST">
+                              {% csrf_token %}
+                              <input type="hidden"  class="id_log" value="" name="id_log">
+                              <div class="row">
+                                 <p>Are you sure you want to Delete?</p>
+                                 <div class="col-md-6">
+                                    <button type="submit" class="buttons-action btn-block" >Yes</button>
+                                 </div>
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                       <button type="submit" class="buttons-action btn-block" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                     <!-- </div> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!--------------------Delete Message Modal Ends---------------->
+</section>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+   $(document).on("click",".edit_food_category",function(){
+   var id = $(this).data("food_category_id");
+   
+   $.ajax({
+     method:"GET",
+     url :"/admin/manage-food-category/edit/"+id,
+     dataType:"html",
+   
+     success:function(data)
+     {
+        $("#edit-food_category .modal-body").html(data);
+     }
+   });
+   });
+   <!--for delete-->
+    var token = '{{csrf_token}}';
+    $(document).on("click","#data-food_category",function(){
+     var delete_value = $(this).data("food_category_id");
+   <!--  document.write(delete_value )-->
+     $('.id_log').val(delete_value);
+   });
+   <!--delete end-->
+       //---------Block and Unblock User Start----------------
+            $(document).on('click', ".approve", function (e) {
+            var categorystatusid = $(e.currentTarget).attr("categorystatus-id");
+            var categorystatus = $(e.currentTarget).attr('categorystatus');
+            console.log(categorystatusid);
+            console.log(categorystatus);
+            if(categorystatus == 'True'){
+            varstatus = 'Deactive';
+            }
+            else{
+            varstatus = 'Active';
+            }
+            swal({
+             title: 'Are you sure?',
+             text: varstatus+' this',
+             icon: 'warning',
+             buttons: {
+               cancel: {
+                 text: "Cancel",
+                 value: null,
+                 visible: true,
+                 closeModal: true,
+               },
+               confirm: {
+                 text: "OK",
+                 value: true,
+                 visible: true,
+                 closeModal: true
+               },
+             }
+            }).then(function (willBlock){
+            if (willBlock) {
+             var dataString = 'categorystatusid='+categorystatusid+'&categorystatus='+categorystatus;
+                      var token = '{{csrf_token}}';
+                      var geturl = window.location.href;
+                      var url_in_array = geturl.split("/");
+                      var set_url = url_in_array[2]; 
+                      
+                      $.ajax({  
+                              method:"POST",
+                              headers: { "X-CSRFToken": token },
+                              url: "http://"+set_url+"/admin/manage-food-category/category-status",
+            
+                 data: dataString,
+                 dataType:"json",
+                 cache: false,
+                 success: function(userresponse)
+                 {
+                   if (userresponse) {
+                       swal({
+                             title: 'successfully!',
+                             text: 'Update',
+                             icon: 'success',
+                              button: "Ok"
+                           }).then(function() {
+                             location.reload();
+                          });
+                   }else{
+                     swal({
+                               text: 'Update failed',
+                                icon:'error',
+                               button: {
+                                 text: "OK",
+                                 value: true,
+                                 visible: true,
+                                 className: "btn btn-primary"
+                               }
+                             });
+                   }
+                   
+                 },
+                   error: function (jqXHR, exception) {
+                       var msg = '';
+                       if (jqXHR.status === 0) {
+                           msg = 'Not connect.\n Verify Network.';
+                       } else if (jqXHR.status == 404) {
+                           msg = 'Requested page not found. [404]';
+                       } else if (jqXHR.status == 500) {
+                           msg = 'Internal Server Error [500].';
+                       } else if (exception === 'parsererror') {
+                           msg = 'Requested JSON parse failed.';
+                       } else if (exception === 'timeout') {
+                           msg = 'Time out error.';
+                       } else if (exception === 'abort') {
+                           msg = 'Ajax request aborted.';
+                       } else {
+                           msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                       }
+                       swal({
+                         text: msg,
+                         icon:'error',
+                         button: {
+                           text: "OK",
+                           value: true,
+                           visible: true,
+                           className: "btn btn-primary"
+                         }
+                       });
+                   },
+               });
+            } 
+            });
+            }); 
+            //---------Block and Unblock User End----------------
+                function remove_product(urls,message,done,fail)
+            {
+            swal({
+               title: message,
+               icon: "warning",
+               buttons: true,
+               dangerMode: true,
+             })
+             .then((willDelete) => {
+               if (willDelete) {
+                window.location.href = urls;           
+               } else {
+                 // swal(fail);
+               }
+             });
+            }  
+                 
+</script>
+{% endblock %}
